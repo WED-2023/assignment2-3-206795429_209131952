@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 const recipes_utils = require("./utils/recipes_utils");
 
-router.get("/", (req, res) => res.send("im here"));
+// router.get("/", (req, res) => res.send("im here"));
 
 /**
  * This path is for searching a recipe
@@ -18,7 +18,7 @@ router.get("/search", async (req, res, next) => {
     res.send(results);
   } catch (error) {
     next(error);
-  }
+  }})
 
 /**
  * This path returns a full details of a recipe by its id
@@ -33,4 +33,3 @@ router.get("/:recipeId", async (req, res, next) => {
 });
 
 module.exports = router;
-})

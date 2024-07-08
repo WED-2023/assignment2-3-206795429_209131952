@@ -1,21 +1,25 @@
 const DButils = require("./DButils");
 
-async function markAsFavorite(user_id, recipe_id){
-    await DButils.execQuery(`insert into FavoriteRecipes values ('${user_id}',${recipe_id})`);
+async function markAsFavorite(username, recipe_id){
+    await DButils.execQuery(`insert into FavoriteRecipes values ('${username}',${recipe_id})`);
 }
 
-async function getFavoriteRecipes(user_id){
-    const recipes_id = await DButils.execQuery(`select recipe_id from FavoriteRecipes where user_id='${user_id}'`);
+async function getFavoriteRecipes(username){
+    const recipes_id = await DButils.execQuery(`select recipe_id from FavoriteRecipes where username='${username}'`);
     return recipes_id;
 }
 
-async function addFamilyRecipe(user_id, recipe_id, recipe_name){
-    await DButils.execQuery(`insert into FamilyRecipe values ('${user_id}',${recipe_id}),${recipe_name})`);
+async function addFamilyRecipe(username, title, image, readyInMinutes, aggregateLikes, vegetarian, vegan, glutenFree, summary, instructions){
+    await DButils.execQuery(`insert into FamilyRecipes values ('${username}',${recipe_id},${recipe_name},${title},${image},${readyInMinutes},${aggregateLikes},${vegetarian},${vegan},${glutenFree},${summary},${instructions}`);
 }
 
+async function addMyRecipe(username, title, image, readyInMinutes, aggregateLikes, vegetarian, vegan, glutenFree, summary, instructions){
+    await DButils.execQuery(`insert into MyRecipes values ('${username}',${recipe_id},${recipe_name},${title},${image},${readyInMinutes},${aggregateLikes},${vegetarian},${vegan},${glutenFree},${summary},${instructions}`);
+}
 
 
 
 exports.markAsFavorite = markAsFavorite;
 exports.getFavoriteRecipes = getFavoriteRecipes;
-exports.addFamilyRecipe = addFamilyRecipe
+exports.addFamilyRecipe = addFamilyRecipe;
+exports.addMyRecipe = addMyRecipe
