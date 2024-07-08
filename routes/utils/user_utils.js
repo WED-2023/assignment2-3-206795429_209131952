@@ -9,7 +9,13 @@ async function getFavoriteRecipes(user_id){
     return recipes_id;
 }
 
+async function addFamilyRecipe(user_id, recipe_id, recipe_name){
+    await DButils.execQuery(`insert into FamilyRecipe values ('${user_id}',${recipe_id}),${recipe_name})`);
+}
+
+
 
 
 exports.markAsFavorite = markAsFavorite;
 exports.getFavoriteRecipes = getFavoriteRecipes;
+exports.addFamilyRecipe = addFamilyRecipe
