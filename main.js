@@ -52,7 +52,7 @@ app.options("*", cors(corsConfig));
 var port = process.env.PORT || "80"; //local=3000 remote=80
 //#endregion
 const user = require("./routes/user");
-const recipes = require("./routes/ recipes");
+const recipes = require("./routes/recipes");
 const auth = require("./routes/auth");
 
 
@@ -89,15 +89,15 @@ app.use(function (err, req, res, next) {
 
 
 
-// const server = app.listen(port, () => {
-//   console.log(`Server listen on port ${port}`);
-// });
+const server = app.listen(port, () => {
+  console.log(`Server listen on port ${port}`);
+});
 
-// process.on("SIGINT", function () {
-//   if (server) {
-//     server.close(() => console.log("server closed"));
-//   }
-//   process.exit();
-// });
+process.on("SIGINT", function () {
+  if (server) {
+    server.close(() => console.log("server closed"));
+  }
+  process.exit();
+});
 
 module.exports = app;

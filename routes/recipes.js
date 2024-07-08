@@ -32,4 +32,18 @@ router.get("/:recipeId", async (req, res, next) => {
   }
 });
 
+/**
+ * This path returns a specified number of random recipes
+ */
+router.get("/random-recipes", async (req, res, next) => {
+  try {
+    const number = parseInt(req.query.number) || 5; // Default to 5 recipes if number is not provided
+    const recipes = await recipes_utils.getRandomRecipes(number);
+    res.send(recipes);
+  } catch (error) {
+    next(error);
+  }
+});
+
+
 module.exports = router;

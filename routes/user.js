@@ -76,13 +76,23 @@ router.post('/users/family_recipes', async (req,res,next) => {
   try{
     const username = req.session.username;
     const recipe_id = req.body.recipeId;
-    const recipe_name = req.body.recipe_name;
-    await user_utils.addFamilyRecipe(username,recipe_id, recipe_name);
+    const title = req.body.title;
+    const image = req.body.image;
+    const readyInMinutes = req.body.readyInMinutes;
+    const aggregateLikes = req.body.aggregateLikes;
+    const vegetarian = req.body.vegetarian;
+    const vegan = req.body.vegan;
+    const glutenFree = req.body.glutenFree;
+    const summary = req.body.summary;
+    const instructions = req.body.instructions;
+
+
+    await user_utils.addFamilyRecipe(username,recipe_id, title, image, readyInMinutes, aggregateLikes, vegetarian, vegan, glutenFree, summary, instructions);
     res.status(200).send("The Recipe successfully saved as favorite");
     } catch(error){
     next(error);
   }
-})
+});
 
 /**
  * This path gets body with frecipe and save this recipe in the list of the logged-in user
@@ -108,6 +118,29 @@ router.post('/users/my_recipes', async (req,res,next) => {
     next(error);
   }
 });
+
+/**
+ * This path returns the user's recipes that were created by the logged-in user
+ */
+router.get('/users/my_recipes', async (req,res,next) => {
+  try{
+    const username = req.session.username;
+    let my_recipes = {};
+    const recipes_id = await user_utils.getMyRecipes(username);
+    let recipes_id_array = [];
+    recipes_id.map((element) => recipes_id_array.push(element.recipe_id)); //extracting the recipe ids into array
+    const results = await recipe_utils.getRecipesPreview(recipes_id_array);
+    res.status(200).send(results);
+  } catch(error){
+    next(error); 
+  }
+});
+
+
+
+
+
+
 
 
 module.exports = router;
