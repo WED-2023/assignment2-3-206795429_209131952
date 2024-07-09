@@ -62,6 +62,8 @@
 //     vegan tinyint DEFAULT NULL,
 //     vegetarian tinyint DEFAULT NULL,
 //     glutenFree tinyint DEFAULT NULL,
+//     summary varchar(255) DEFAULT NULL,
+//     instructions varchar(255) DEFAULT NULL,
 //     PRIMARY KEY (username, recipe_id),
 //     FOREIGN KEY (username) REFERENCES users (username)
 // ) ENGINE = InnoDB DEFAULT CHARSET = latin1;

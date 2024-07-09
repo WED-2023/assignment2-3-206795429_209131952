@@ -70,7 +70,22 @@ async function getRandomRecipes(number = 3) {
     }));
 }
 
+async function getRecipesPreview(recipeIds, username) {
+    try {
+        const recipesPromises = recipeIds.map(async (recipeId) => {
+            return await getRecipeDetails(recipeId);
+        });
+
+        const recipes = await Promise.all(recipesPromises);
+
+        return recipes;
+    } catch (error) {
+        throw error; // Handle or log the error as needed
+    }
+}
+
 exports.getRecipeDetails = getRecipeDetails;
 exports.getRandomRecipes = getRandomRecipes;
+exports.getRecipesPreview = getRecipesPreview;
 
 
