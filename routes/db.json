@@ -10,7 +10,7 @@
 
 // CREATE TABLE FavoriteRecipes (
 //     username CHAR(45) NOT NULL,
-//     recipe_id CHAR(45) NOT NULL,
+//     recipe_id int NOT NULL,
 //     PRIMARY KEY (username, recipe_id),
 //     FOREIGN KEY (username) REFERENCES users(username)
 // ) ENGINE=InnoDB AUTO_INCREMENT=4080 DEFAULT CHARSET=latin1;
@@ -28,3 +28,48 @@
 //     PRIMARY KEY (username, recipe_id),
 //     FOREIGN KEY (username) REFERENCES users (username)
 // ) ENGINE = InnoDB DEFAULT CHARSET = latin1;
+
+// CREATE TABLE `UsersAllViews` (
+//     username char(45) NOT NULL,
+//     recipe_id int NOT NULL,
+//     PRIMARY KEY (username, recipe_id),
+//     FOREIGN KEY (username) REFERENCES users (username)
+// ) ENGINE = InnoDB AUTO_INCREMENT = 4080 DEFAULT CHARSET = latin1
+
+
+// CREATE TABLE `Ingredients` (
+//     recipe_id int NOT NULL,
+//     ingredient char(45) NOT NULL,
+//     amount FLOAT NOT NULL,
+//     PRIMARY KEY (recipe_id, ingredient)
+// ) ENGINE = InnoDB AUTO_INCREMENT = 4080 DEFAULT CHARSET = latin1
+
+
+    // CREATE TABLE `Instructions` (
+    //     recipe_id int NOT NULL,
+    //     instruction_num INTEGER NOT NULL,
+    //     instruction char(255) NOT NULL,
+    //     PRIMARY KEY (recipe_id, instruction_num)
+    // ) ENGINE = InnoDB AUTO_INCREMENT = 4080 DEFAULT CHARSET = latin1
+
+// CREATE TABLE MyRecipes (
+//     username varchar(45) NOT NULL,
+//     recipe_id int NOT NULL,
+//     title varchar(45) NOT NULL,
+//     readyInMinutes int NOT NULL,
+//     image varchar(255) DEFAULT NULL,
+//     popularity int DEFAULT NULL,
+//     vegan tinyint DEFAULT NULL,
+//     vegetarian tinyint DEFAULT NULL,
+//     glutenFree tinyint DEFAULT NULL,
+//     PRIMARY KEY (username, recipe_id),
+//     FOREIGN KEY (username) REFERENCES users (username)
+// ) ENGINE = InnoDB DEFAULT CHARSET = latin1;
+
+// CREATE TABLE `UsersLastViews` (
+//     username char(45) NOT NULL,
+//     recipe_id int NOT NULL,
+//     time DATETIME NOT NULL,
+//     PRIMARY KEY (username, recipe_id),
+//     FOREIGN KEY (username) REFERENCES users (username)
+// ) ENGINE = InnoDB AUTO_INCREMENT = 4080 DEFAULT CHARSET = latin1
