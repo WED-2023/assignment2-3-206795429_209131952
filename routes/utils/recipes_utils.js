@@ -51,7 +51,7 @@ async function searchRecipe(recipeName, cuisine, diet, intolerance, number, user
     return getRecipesPreview(response.data.results.map((element) => element.id), username);
 }
 
-async function getRandomRecipes(number = 5) {
+async function getRandomRecipes(number = 3) {
     const response = await axios.get(`${api_domain}/random`, {
         params: {
             number: number,
