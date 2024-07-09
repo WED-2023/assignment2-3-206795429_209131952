@@ -15,7 +15,7 @@ const config={
     host: "localhost",
     user: "root",
     password: "Aa123456",
-    database:"recipesdb"
+    database:"mydb"
   }
 
 const pool = new mysql.createPool(config);
