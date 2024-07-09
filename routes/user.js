@@ -24,7 +24,7 @@ router.use(async function (req, res, next) {
 /**
  * This path gets body with recipeId and save this recipe in the favorites list of the logged-in user
  */
-router.post('/users/favorites', async (req,res,next) => {
+router.post('/favorites', async (req,res,next) => {
   try{
     const username = req.session.username;
     const recipe_id = req.body.recipeId;
@@ -38,7 +38,7 @@ router.post('/users/favorites', async (req,res,next) => {
 /**
  * This path returns the favorites recipes that were saved by the logged-in user
  */
-router.get('/users/favorites', async (req,res,next) => {
+router.get('/favorites', async (req,res,next) => {
   try{
     const username = req.session.username;
     let favorite_recipes = {};
@@ -55,7 +55,7 @@ router.get('/users/favorites', async (req,res,next) => {
 /**
  * This path returns the family recipes that were created by the logged-in user
  */
-router.get('/users/family_recipes', async (req,res,next) => {
+router.get('/family_recipes', async (req,res,next) => {
   try{
     const username = req.session.username;
     let family_recipes = {};
@@ -72,7 +72,7 @@ router.get('/users/family_recipes', async (req,res,next) => {
 /**
  * This path gets body with family_recipe and save this recipe in the list of the logged-in user
  */
-router.post('/users/family_recipes', async (req,res,next) => {
+router.post('/family_recipes', async (req,res,next) => {
   try{
     const username = req.session.username;
     const recipe_id = req.body.recipeId;
@@ -97,7 +97,7 @@ router.post('/users/family_recipes', async (req,res,next) => {
 /**
  * This path gets body with frecipe and save this recipe in the list of the logged-in user
  */
-router.post('/users/my_recipes', async (req,res,next) => {
+router.post('/my_recipes', async (req,res,next) => {
   try{
     const username = req.session.username;
     const recipe_id = req.body.recipeId;
@@ -122,7 +122,7 @@ router.post('/users/my_recipes', async (req,res,next) => {
 /**
  * This path returns the user's recipes that were created by the logged-in user
  */
-router.get('/users/my_recipes', async (req,res,next) => {
+router.get('/my_recipes', async (req,res,next) => {
   try{
     const username = req.session.username;
     let my_recipes = {};
