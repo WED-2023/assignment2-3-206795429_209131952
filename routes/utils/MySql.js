@@ -1,4 +1,4 @@
-var mysql = require('mysql');
+var mysql = require('mysql2');
 require("dotenv").config();
 
 /*
@@ -14,7 +14,7 @@ const config={
   connectionLimit:4,
     host: "localhost",
     user: "root",
-    password: "Aa123456",
+    password: "Aa1234",
     database:"mydb"
   }
 

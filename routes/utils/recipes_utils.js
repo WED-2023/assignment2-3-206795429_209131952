@@ -18,7 +18,6 @@ async function getRecipeInformation(recipe_id) {
     });
 }
 
-
 async function getRecipeDetails(recipe_id) {
     let recipe_info = await getRecipeInformation(recipe_id);
     let { id, title, readyInMinutes, image, aggregateLikes, vegan, vegetarian, glutenFree } = recipe_info.data;
@@ -87,5 +86,6 @@ async function getRecipesPreview(recipeIds, username) {
 exports.getRecipeDetails = getRecipeDetails;
 exports.getRandomRecipes = getRandomRecipes;
 exports.getRecipesPreview = getRecipesPreview;
+exports.searchRecipe = searchRecipe;
 
 

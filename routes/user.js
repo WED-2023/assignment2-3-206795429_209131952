@@ -42,7 +42,11 @@ router.delete('/favorites', async (req, res, next) => {
       await user_utils.removeFavorite(username, recipe_id);
       res.status(200).send("The Recipe successfully removed from favorites");
   } catch (error) {
-      next(error);
+    if (error.message === "Recipe not found in favorites") {
+      res.status(404).send("Recipe not found");
+    } else {
+        next(error); // Handle other errors normally
+    }
   }
 });
 
@@ -59,7 +63,11 @@ router.get('/favorites', async (req,res,next) => {
     const results = await recipe_utils.getRecipesPreview(recipes_id_array);
     res.status(200).send(results);
   } catch(error){
-    next(error); 
+    if (error.message === "There are no favorite recipes") {
+      res.status(404).send("There are no favorite recipes");
+    } else {
+        next(error); // Handle other errors normally
+    } 
   }
 });
 
@@ -96,15 +104,18 @@ router.get('/my_recipes', async (req,res,next) => {
   try{
     const username = req.session.username;
     let my_recipes = {};
-    const recipes_id = await user_utils.getMyRecipes(username);
+    const recipes = await user_utils.getMyRecipes(username);
     let recipes_id_array = [];
-    recipes_id.map((element) => recipes_id_array.push(element.recipe_id)); //extracting the recipe ids into array
+    recipes.map((element) => recipes_id_array.push(element.recipe_id)); //extracting the recipe ids into array
     const results = await recipe_utils.getRecipesPreview(recipes_id_array);
     res.status(200).send(results);
   } catch(error){
-    next(error); 
-  }
-});
+    if (error.message === "There are no users recipes recipes") {
+      res.status(404).send("There are no users recipes recipes");
+    } else {
+        next(error); // Handle other errors normally
+    } 
+}});
 
 
 

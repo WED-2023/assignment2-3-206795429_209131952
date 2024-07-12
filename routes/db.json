@@ -45,16 +45,15 @@
 // ) ENGINE = InnoDB AUTO_INCREMENT = 4080 DEFAULT CHARSET = latin1
 
 
-    // CREATE TABLE `Instructions` (
-    //     recipe_id int NOT NULL,
-    //     instruction_num INTEGER NOT NULL,
-    //     instruction char(255) NOT NULL,
-    //     PRIMARY KEY (recipe_id, instruction_num)
-    // ) ENGINE = InnoDB AUTO_INCREMENT = 4080 DEFAULT CHARSET = latin1
+// CREATE TABLE `Instructions` (
+//     recipe_id int NOT NULL,
+//     instruction_num INTEGER NOT NULL,
+//     instruction char(255) NOT NULL,
+//     PRIMARY KEY (recipe_id, instruction_num)
+// ) ENGINE = InnoDB AUTO_INCREMENT = 4080 DEFAULT CHARSET = latin1
 
 // CREATE TABLE MyRecipes (
 //     username char(45) NOT NULL,
-//     recipe_id int NOT NULL,
 //     title char(45) NOT NULL,
 //     readyInMinutes int NOT NULL,
 //     image char(255) DEFAULT NULL,
@@ -64,7 +63,7 @@
 //     glutenFree tinyint DEFAULT NULL,
 //     summary char(255) DEFAULT NULL,
 //     instructions char(255) DEFAULT NULL,
-//     PRIMARY KEY (username, recipe_id),
+//     PRIMARY KEY (username, title),
 //     FOREIGN KEY (username) REFERENCES users (username)
 // ) ENGINE = InnoDB DEFAULT CHARSET = latin1;
 
