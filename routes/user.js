@@ -20,6 +20,16 @@ router.use(async function (req, res, next) {
   }
 });
 
+// Middleware to check if user is authenticated
+function isAuthenticated(req, res, next) {
+  if (req.session && req.session.username) {
+    return next();
+  } else {
+    res.status(401).send('Unauthorized');
+  }
+}
+
+
 
 /**
  * This path gets body with recipeId and save this recipe in the favorites list of the logged-in user
@@ -119,7 +129,7 @@ router.get('/favorites', async (req,res,next) => {
 // });
 
 
-router.post('/my_recipes', async (req, res, next) => {
+router.post('/my_recipes',isAuthenticated, async (req, res, next) => {
   try {
     const username = req.session.username;
     const { title, image, readyInMinutes, aggregateLikes, vegetarian, vegan, glutenFree, summary, ingredients, instructions } = req.body;
@@ -165,7 +175,7 @@ router.post('/my_recipes', async (req, res, next) => {
 // }});
 
 
-router.get('/my_recipes', async (req, res, next) => {
+router.get('/my_recipes',isAuthenticated, async (req, res, next) => {
   try {
     const username = req.session.username;
     const recipes = await user_utils.getMyRecipes(username);
