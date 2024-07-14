@@ -131,6 +131,39 @@ async function getInstructions(recipe_id) {
     }
   }
 
+// Function to mark a recipe as viewed
+async function markAsViewed(username, recipe_id) {
+  const time = new Date(); // Use current time as the time of viewing
+  const query = `
+    INSERT INTO userslastviews (username, recipe_id, time)
+    VALUES ('${username}', ${recipe_id}, '${time.toISOString().slice(0, 19).replace('T', ' ')}')
+    ON DUPLICATE KEY UPDATE time = VALUES(time)
+  `;
+  try {
+    await DButils.execQuery(query);
+  } catch (error) {
+    throw new Error(`Error marking recipe as viewed for user ${username}: ${error.message}`);
+  }
+}
+
+// Function to get the last viewed recipes
+async function getLastViewedRecipes(username) {
+  const query = `
+    SELECT r.*
+    FROM userslastviews ulv
+    JOIN recipes r ON ulv.recipe_id = r.id
+    WHERE ulv.username = '${username}'
+    ORDER BY ulv.time DESC
+    LIMIT 3
+  `;
+  try {
+    const rows = await DButils.execQuery(query);
+    return rows;
+  } catch (error) {
+    throw new Error(`Error fetching last viewed recipes for user ${username}: ${error.message}`);
+  }
+}
+
 exports.markAsFavorite = markAsFavorite;
 exports.removeFavorite = removeFavorite;
 exports.getFavoriteRecipes = getFavoriteRecipes;
@@ -140,3 +173,5 @@ exports.addInstruction =addInstruction;
 exports.addIngredient = addIngredient;
 exports.getIngredients = getIngredients;
 exports.getInstructions = getInstructions;
+exports.markAsViewed = markAsViewed;
+exports.getLastViewedRecipes = getLastViewedRecipes;

@@ -194,6 +194,33 @@ router.get('/my_recipes',isAuthenticated, async (req, res, next) => {
   }
 });
 
+// GET endpoint to fetch the last viewed recipes
+router.get('/last_viewed_recipes', authenticateToken, async (req, res, next) => {
+  try {
+    const username = req.user.username; // Assuming req.user contains the authenticated user information
+    const recipes = await userUtils.getLastViewedRecipes(username);
+    res.json({ recipes });
+  } catch (error) {
+    console.error('Error fetching last viewed recipes:', error);
+    next(error);
+  }
+});
+
+// POST endpoint to add a new last viewed recipe
+router.post('/last_viewed_recipes', authenticateToken, async (req, res, next) => {
+  try {
+    const username = req.user.username; // Assuming req.user contains the authenticated user information
+    const { recipe_id } = req.body;
+    await userUtils.markAsViewed(username, recipe_id);
+    res.status(201).json({ message: 'Last viewed recipe added/updated successfully' });
+  } catch (error) {
+    console.error('Error adding/updating last viewed recipe:', error);
+    next(error);
+  }
+});
+
+
+
 
 
 
