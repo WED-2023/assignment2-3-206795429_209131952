@@ -37,20 +37,26 @@
 // ) ENGINE = InnoDB AUTO_INCREMENT = 4080 DEFAULT CHARSET = latin1
 
 
+
 // CREATE TABLE `Ingredients` (
-//     recipe_id int NOT NULL,
-//     ingredient char(45) NOT NULL,
-//     amount FLOAT NOT NULL,
-//     PRIMARY KEY (recipe_id, ingredient)
-// ) ENGINE = InnoDB AUTO_INCREMENT = 4080 DEFAULT CHARSET = latin1
+//     `username` char(45) NOT NULL,
+//     `title` char(45) NOT NULL,
+//     `ingredient` char(45) NOT NULL,
+//     `amount` FLOAT NOT NULL,
+//     PRIMARY KEY (`title`, `ingredient`),
+//     CONSTRAINT `fk_ingredients_title` FOREIGN KEY (`username`, `title`) REFERENCES `myrecipes` (`username`, `title`)
+// ) ENGINE = InnoDB DEFAULT CHARSET = latin1;
 
 
 // CREATE TABLE `Instructions` (
-//     recipe_id int NOT NULL,
-//     instruction_num INTEGER NOT NULL,
-//     instruction char(255) NOT NULL,
-//     PRIMARY KEY (recipe_id, instruction_num)
-// ) ENGINE = InnoDB AUTO_INCREMENT = 4080 DEFAULT CHARSET = latin1
+//     `username` char(45) NOT NULL,
+//     `title` char(45) NOT NULL,
+//     `instruction_num` INTEGER NOT NULL,
+//     `instruction` char(255) NOT NULL,
+//     PRIMARY KEY (`username`, `title`, `instruction_num`),
+//     CONSTRAINT `fk_instructions_username` FOREIGN KEY (`username`) REFERENCES `users` (`username`),
+//     CONSTRAINT `fk_instructions_title` FOREIGN KEY (`username`, `title`) REFERENCES `myrecipes` (`username`, `title`)
+// ) ENGINE = InnoDB DEFAULT CHARSET = latin1;
 
 // CREATE TABLE MyRecipes (
 //     username char(45) NOT NULL,
