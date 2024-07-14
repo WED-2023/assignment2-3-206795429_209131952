@@ -24,31 +24,52 @@ router.use(async function (req, res, next) {
 /**
  * This path gets body with recipeId and save this recipe in the favorites list of the logged-in user
  */
-router.post('/favorites', async (req,res,next) => {
-  try{
+// router.post('/favorites', async (req,res,next) => {
+//   try{
+//     const username = req.session.username;
+//     const recipe_id = req.body.recipeId;
+//     await user_utils.markAsFavorite(username,recipe_id);
+//     res.status(200).send("The Recipe successfully saved as favorite");
+//     } catch(error){
+//     next(error);
+//   }
+// })
+
+// router.delete('/favorites', async (req, res, next) => {
+//   try {
+//       const username = req.session.username;
+//       const recipe_id = req.body.recipeId;
+//       await user_utils.removeFavorite(username, recipe_id);
+//       res.status(200).send("The Recipe successfully removed from favorites");
+//   } catch (error) {
+//     if (error.message === "Recipe not found in favorites") {
+//       res.status(404).send("Recipe not found");
+//     } else {
+//         next(error); // Handle other errors normally
+//     }
+//   }
+// });
+
+// POST endpoint to add or remove favorite recipe
+router.post('/favorites', async (req, res, next) => {
+  try {
+    const { recipeId } = req.body;
     const username = req.session.username;
-    const recipe_id = req.body.recipeId;
-    await user_utils.markAsFavorite(username,recipe_id);
-    res.status(200).send("The Recipe successfully saved as favorite");
-    } catch(error){
+
+    const isFavorite = await user_utils.isRecipeFavorite(username, recipeId);
+
+    if (isFavorite) {
+      await user_utils.removeFavorite(username, recipeId);
+      res.status(200).send("Recipe removed from favorites");
+    } else {
+      await user_utils.markAsFavorite(username, recipeId);
+      res.status(200).send("Recipe added to favorites");
+    }
+  } catch (error) {
     next(error);
   }
-})
-
-router.delete('/favorites', async (req, res, next) => {
-  try {
-      const username = req.session.username;
-      const recipe_id = req.body.recipeId;
-      await user_utils.removeFavorite(username, recipe_id);
-      res.status(200).send("The Recipe successfully removed from favorites");
-  } catch (error) {
-    if (error.message === "Recipe not found in favorites") {
-      res.status(404).send("Recipe not found");
-    } else {
-        next(error); // Handle other errors normally
-    }
-  }
 });
+
 
 /**
  * This path returns the favorites recipes that were saved by the logged-in user

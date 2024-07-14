@@ -11,6 +11,23 @@ async function removeFavorite(username, recipe_id) {
     }
 }
 
+async function isRecipeFavorite(username, recipeId) {
+  // Query the database to check if the recipeId exists in the favorites of the user
+  const query = `
+    SELECT *
+    FROM user_favorites
+    WHERE username = '${username}' AND recipe_id = ${recipeId}
+  `;
+
+  try {
+    const result = await DButils.execQuery(query);
+    return result.length > 0; // If there are results, the recipe is marked as favorite
+  } catch (error) {
+    throw new Error(`Error checking if recipe ${recipeId} is favorite for user ${username}: ${error.message}`);
+  }
+}
+
+
 async function getFavoriteRecipes(username){
     const recipes  = await DButils.execQuery(`select recipe_id from FavoriteRecipes where username='${username}'`);
     if (recipes.length === 0) {

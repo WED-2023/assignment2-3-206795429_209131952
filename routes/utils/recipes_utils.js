@@ -84,6 +84,17 @@ async function searchRecipe(recipeName, cuisine, diet, intolerance, number, user
             number: number,
             apiKey: process.env.spooncular_apiKey
         }
+        
+    }
+);
+    // Log parameters to verify correct formatting
+    console.log("Query Parameters:", {
+        query: recipeName,
+        cuisine: cuisine,
+        diet: diet,
+        intolerances: intolerance,
+        number: number,
+        apiKey: process.env.spooncular_apiKey
     });
 
     return getRecipesPreview(response.data.results.map((element) => element.id), username);

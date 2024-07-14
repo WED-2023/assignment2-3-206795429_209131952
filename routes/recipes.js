@@ -47,5 +47,18 @@ router.get("/random", async (req, res, next) => {
   }
 });
 
+// Endpoint to fetch last search results
+router.get('/last-search', async (req, res, next) => {
+  try {
+    // Implement logic to fetch and return last search results for the logged-in user
+    const results = await fetchLastSearchForUser(req.user.id); // Example function to fetch from database
+    res.json({ recipes: results });
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+
 
 module.exports = router;

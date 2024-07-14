@@ -5,7 +5,8 @@ var path = require("path");
 var logger = require("morgan");
 const session = require("client-sessions");
 const DButils = require("./routes/utils/DButils");
-var cors = require('cors')
+var cors = require('cors');
+const axios = require('axios');
 
 var app = express();
 app.use(logger("dev")); //logger
@@ -38,7 +39,7 @@ app.get("/",function(req,res)
 
 });
 
-// app.use(cors());
+app.use(cors());
 // app.options("*", cors());
 
 const corsConfig = {
@@ -55,6 +56,9 @@ const user = require("./routes/user");
 const recipes = require("./routes/recipes");
 const auth = require("./routes/auth");
 
+// Axios configuration
+axios.defaults.baseURL = 'https://api.spoonacular.com';
+axios.defaults.withCredentials = true;
 
 //#region cookie middleware
 app.use(function (req, res, next) {
@@ -89,15 +93,15 @@ app.use(function (err, req, res, next) {
 
 
 
-// const server = app.listen(port, () => {
-//   console.log(`Server listen on port ${port}`);
-// });
+const server = app.listen(port, () => {
+  console.log(`Server listen on port ${port}`);
+});
 
-// process.on("SIGINT", function () {
-//   if (server) {
-//     server.close(() => console.log("server closed"));
-//   }
-//   process.exit();
-// });
+process.on("SIGINT", function () {
+  if (server) {
+    server.close(() => console.log("server closed"));
+  }
+  process.exit();
+});
 
 module.exports = app;
