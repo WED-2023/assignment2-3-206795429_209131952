@@ -141,11 +141,11 @@ router.post('/my_recipes',isAuthenticated, async (req, res, next) => {
     const recipeId = addRecipeResult.insertId; // Adjust based on how your DButils.execQuery returns the insertId
 
     for (const [index, instruction] of instructions.entries()) {
-      await user_utils.addInstruction(recipeId, index + 1, instruction);
+      await user_utils.addInstruction(username, title, index + 1, instruction);
     }
 
     for (const ingredient of ingredients) {
-      await user_utils.addIngredient(recipeId, ingredient.name, ingredient.amount);
+      await user_utils.addIngredient(username, title, ingredient.name, ingredient.amount);
     }
 
     res.status(200).send("The Recipe successfully saved in MyRecipes");
@@ -179,13 +179,13 @@ router.get('/my_recipes',isAuthenticated, async (req, res, next) => {
   try {
     const username = req.session.username;
     const recipes = await user_utils.getMyRecipes(username);
-    const recipeIds = recipes.map(recipe => recipe.recipe_id);
+    const recipetitles = recipes.map(recipe => recipe.title);
 
-    const recipePreviews = await recipe_utils.getRecipesPreview(recipeIds);
+    const recipePreviews = await recipe_utils.getRecipesPreview(recipetitles);
 
     for (const recipe of recipePreviews) {
-      recipe.ingredients = await user_utils.getIngredients(recipe.recipe_id);
-      recipe.instructions = await user_utils.getInstructions(recipe.recipe_id);
+      recipe.ingredients = await user_utils.getIngredients(recipe.title);
+      recipe.instructions = await user_utils.getInstructions(recipe.title);
     }
 
     res.status(200).send(recipePreviews);
@@ -195,10 +195,10 @@ router.get('/my_recipes',isAuthenticated, async (req, res, next) => {
 });
 
 // GET endpoint to fetch the last viewed recipes
-router.get('/last_viewed_recipes', authenticateToken, async (req, res, next) => {
+router.get('/last_viewed_recipes', isAuthenticated, async (req, res, next) => {
   try {
-    const username = req.user.username; // Assuming req.user contains the authenticated user information
-    const recipes = await userUtils.getLastViewedRecipes(username);
+    const username = req.session.username; // Assuming req.user contains the authenticated user information
+    const recipes = await user_utils.getLastViewedRecipes(username);
     res.json({ recipes });
   } catch (error) {
     console.error('Error fetching last viewed recipes:', error);
@@ -206,12 +206,13 @@ router.get('/last_viewed_recipes', authenticateToken, async (req, res, next) => 
   }
 });
 
+
 // POST endpoint to add a new last viewed recipe
-router.post('/last_viewed_recipes', authenticateToken, async (req, res, next) => {
+router.post('/last_viewed_recipes', isAuthenticated, async (req, res, next) => {
   try {
-    const username = req.user.username; // Assuming req.user contains the authenticated user information
+    const username = req.session.username; // Assuming req.user contains the authenticated user information
     const { recipe_id } = req.body;
-    await userUtils.markAsViewed(username, recipe_id);
+    await user_utils.markAsViewed(username, recipe_id);
     res.status(201).json({ message: 'Last viewed recipe added/updated successfully' });
   } catch (error) {
     console.error('Error adding/updating last viewed recipe:', error);

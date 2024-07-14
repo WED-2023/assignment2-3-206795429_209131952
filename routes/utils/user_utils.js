@@ -81,9 +81,9 @@ async function getMyRecipes(username) {
   }
 
 // Function to add an instruction to the instructions table
-async function addInstruction(recipe_id, instruction_num, instruction) {
-    const query = `INSERT INTO instructions (recipe_id, instruction_num, instruction) 
-                   VALUES (${recipe_id}, ${instruction_num}, '${instruction}')`;
+async function addInstruction(username, title, instruction_num, instruction) {
+    const query = `INSERT INTO instructions (username, title, instruction_num, instruction) 
+                   VALUES ('${username}', '${title}', '${instruction_num}', '${instruction}')`;
     try {
       await DButils.execQuery(query);
       return { success: true, message: "Instruction successfully added." };
@@ -95,9 +95,9 @@ async function addInstruction(recipe_id, instruction_num, instruction) {
 
 
 // Function to add an ingredient to the ingredients table
-async function addIngredient(recipe_id, ingredient, amount) {
-    const query = `INSERT INTO ingredients (recipe_id, ingredient, amount) 
-                   VALUES (${recipe_id}, '${ingredient}', '${amount}')`;
+async function addIngredient(username, title, ingredient, amount) {
+    const query = `INSERT INTO ingredients (username, title, ingredient, amount) 
+                   VALUES ('${username}', '${title}', '${ingredient}', '${amount}')`;
     try {
       await DButils.execQuery(query);
       return { success: true, message: "Ingredient successfully added." };
@@ -108,8 +108,8 @@ async function addIngredient(recipe_id, ingredient, amount) {
   }
 
 // Function to get all ingredients for a specific recipe
-async function getIngredients(recipe_id) {
-    const query = `SELECT * FROM ingredients WHERE recipe_id=${recipe_id}`;
+async function getIngredients(title) {
+    const query = `SELECT * FROM ingredients WHERE title=${title} AND username=${req.session.username}`;
     try {
       const ingredients = await DButils.execQuery(query);
       return { success: true, data: ingredients };
@@ -120,8 +120,8 @@ async function getIngredients(recipe_id) {
   }
 
 // Function to get all instructions for a specific recipe
-async function getInstructions(recipe_id) {
-    const query = `SELECT * FROM instructions WHERE recipe_id=${recipe_id}`;
+async function getInstructions(title) {
+    const query = `SELECT * FROM instructions WHERE title=${title} AND username=${req.session.username}`;
     try {
       const instructions = await DButils.execQuery(query);
       return { success: true, data: instructions };
@@ -149,9 +149,8 @@ async function markAsViewed(username, recipe_id) {
 // Function to get the last viewed recipes
 async function getLastViewedRecipes(username) {
   const query = `
-    SELECT r.*
+    SELECT recipe_id
     FROM userslastviews ulv
-    JOIN recipes r ON ulv.recipe_id = r.id
     WHERE ulv.username = '${username}'
     ORDER BY ulv.time DESC
     LIMIT 3
