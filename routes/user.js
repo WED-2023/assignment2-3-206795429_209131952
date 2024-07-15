@@ -178,12 +178,18 @@ router.post('/my_recipes',isAuthenticated, async (req, res, next) => {
 router.get('/my_recipes',isAuthenticated, async (req, res, next) => {
   try {
     const username = req.session.username;
-    const recipes = await user_utils.getMyRecipes(username);
-    const recipetitles = recipes.map(recipe => recipe.title);
+    const result = await user_utils.getMyRecipes(username);
 
-    const recipePreviews = await recipe_utils.getRecipesPreview(recipetitles);
+    if (!result.success) {
+      throw new Error(result.message);
+    }
 
-    for (const recipe of recipePreviews) {
+    const recipes = result.data;
+    //const recipetitles = recipes.map(recipe => recipe.title);
+
+    //const recipePreviews = await recipe_utils.getRecipesPreview(recipetitles);
+
+    for (const recipe of recipes) {
       recipe.ingredients = await user_utils.getIngredients(recipe.title);
       recipe.instructions = await user_utils.getInstructions(recipe.title);
     }

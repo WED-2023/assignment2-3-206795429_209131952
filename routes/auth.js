@@ -8,22 +8,22 @@ const validator = require('validator');
 
 
 //check the constraits of the values
-const userSchema = joi.object({
-  username: joi.string().min(3).max(8).pattern(/^[a-zA-Z]{3,8}$/).required(),
-  firstname: joi.string().pattern(/^[a-zA-Z]+$/).required(),
-  lastname: joi.string().pattern(/^[a-zA-Z]+$/).required(),
-  country: joi.string().required(), // You can add more specific validation based on countries.json
-  password: joi.string().min(5).max(10).pattern(/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{5,10}$/).required(),
-  confirmPassword: joi.string().valid(joi.ref('password')).required().messages({'any.only': 'Passwords do not match'}),
-  email: joi.string().email().required(),
-  profilePic: joi.string().optional() // Assuming profilePic is optional
-});
+// const userSchema = joi.object({
+//   username: joi.string().min(3).max(8).pattern(/^[a-zA-Z]{3,8}$/).required(),
+//   firstname: joi.string().pattern(/^[a-zA-Z]+$/).required(),
+//   lastname: joi.string().pattern(/^[a-zA-Z]+$/).required(),
+//   country: joi.string().required(), // You can add more specific validation based on countries.json
+//   password: joi.string().min(5).max(10).pattern(/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{5,10}$/).required(),
+//   //confirmPassword: joi.string().valid(joi.ref('password')).required().messages({'any.only': 'Passwords do not match'}),
+//   email: joi.string().email().required(),
+//   profilePic: joi.string().optional() // Assuming profilePic is optional
+// });
 
 
 router.post("/Register", async (req, res, next) => {
   try {
     // Validate request body against schema
-    await userSchema.validateAsync(req.body);
+    //await userSchema.validateAsync(req.body);
 
     // Extract user details from request body
     // parameters exists

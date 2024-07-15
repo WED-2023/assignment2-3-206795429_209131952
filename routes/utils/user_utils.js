@@ -1,11 +1,11 @@
 const DButils = require("./DButils");
 
 async function markAsFavorite(username, recipe_id){
-    await DButils.execQuery(`insert into FavoriteRecipes values ('${username}',${recipe_id})`);
+    await DButils.execQuery(`insert into favoriterecipes values ('${username}',${recipe_id})`);
 }
 
 async function removeFavorite(username, recipe_id) {
-    const result = await DButils.execQuery(`DELETE FROM FavoriteRecipes WHERE username='${username}' AND recipe_id=${recipe_id}`);
+    const result = await DButils.execQuery(`DELETE FROM favoriterecipes WHERE username='${username}' AND recipe_id=${recipe_id}`);
     if (result.affectedRows === 0) {
         throw new Error("Recipe not found in favorites");
     }
@@ -13,15 +13,15 @@ async function removeFavorite(username, recipe_id) {
 
 async function isRecipeFavorite(username, recipeId) {
   // Query the database to check if the recipeId exists in the favorites of the user
-  const query = `
-    SELECT *
-    FROM user_favorites
-    WHERE username = '${username}' AND recipe_id = ${recipeId}
-  `;
-
+  const query = `SELECT * FROM favoriterecipes WHERE username = '${username}' AND recipe_id = ${recipeId}`;
   try {
     const result = await DButils.execQuery(query);
-    return result.length > 0; // If there are results, the recipe is marked as favorite
+    if (result.length > 0){
+      return true // If there are results, the recipe is marked as favorite
+    }
+    else{
+      return false
+    }
   } catch (error) {
     throw new Error(`Error checking if recipe ${recipeId} is favorite for user ${username}: ${error.message}`);
   }
@@ -174,3 +174,4 @@ exports.getIngredients = getIngredients;
 exports.getInstructions = getInstructions;
 exports.markAsViewed = markAsViewed;
 exports.getLastViewedRecipes = getLastViewedRecipes;
+exports.isRecipeFavorite = isRecipeFavorite;
