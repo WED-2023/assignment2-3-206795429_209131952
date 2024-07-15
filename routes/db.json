@@ -42,7 +42,7 @@
 //     `username` char(45) NOT NULL,
 //     `title` char(45) NOT NULL,
 //     `ingredient` char(45) NOT NULL,
-//     `amount` FLOAT NOT NULL,
+//     `amount` char(45) NOT NULL,
 //     PRIMARY KEY (`title`, `ingredient`),
 //     CONSTRAINT `fk_ingredients_title` FOREIGN KEY (`username`, `title`) REFERENCES `myrecipes` (`username`, `title`)
 // ) ENGINE = InnoDB DEFAULT CHARSET = latin1;
