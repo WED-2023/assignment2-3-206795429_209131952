@@ -122,7 +122,7 @@ async function addIngredient(username, title, ingredient, amount) {
 async function getIngredients(title,username) {
     const query = `SELECT * FROM ingredients WHERE title='${title}' AND username='${username}'`;
     try {
-      const ingredients = await DButils.execQuery(query);
+      const ingredients = await DButils.execQuery(query, [title, username]);
       return { success: true, data: ingredients };
     } catch (error) {
       console.error("SQL Error: ", error.message);
@@ -134,7 +134,7 @@ async function getIngredients(title,username) {
 async function getInstructions(title, username) {
     const query = `SELECT * FROM instructions WHERE title='${title}' AND username='${username}'`;
     try {
-      const instructions = await DButils.execQuery(query);
+      const instructions = await DButils.execQuery(query, [title, username]);
       return { success: true, data: instructions };
     } catch (error) {
       console.error("SQL Error: ", error.message);
@@ -157,13 +157,7 @@ async function markAsViewed(username, recipe_id) {
 
 // Function to get the last viewed recipes
 async function getLastViewedRecipes(username) {
-  const query = `
-    SELECT recipe_id
-    FROM userslastviews ulv
-    WHERE ulv.username = '${username}'
-    ORDER BY ulv.time DESC
-    LIMIT 3
-  `;
+  const query = `SELECT recipe_id FROM userslastviews ulv WHERE ulv.username = '${username}' ORDER BY ulv.time DESC LIMIT 3`;
   try {
     const rows = await DButils.execQuery(query);
     return rows;

@@ -235,7 +235,15 @@ router.get('/my_recipes/:title',isAuthenticated, async (req, res, next) => {
 router.get('/last_viewed_recipes', isAuthenticated, async (req, res, next) => {
   try {
     const username = req.session.username; // Assuming req.user contains the authenticated user information
-    const recipes = await user_utils.getLastViewedRecipes(username);
+    const recipeIds = await user_utils.getLastViewedRecipes(username);
+
+    // Fetch details for each recipe ID
+    const recipes = [];
+    for (const recipeId of recipeIds) {
+      const recipeDetails = await recipe_utils.getRecipeDetails(recipeId.recipe_id);
+      recipes.push(recipeDetails);
+    }
+
     res.json({ recipes });
   } catch (error) {
     console.error('Error fetching last viewed recipes:', error);
