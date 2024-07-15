@@ -48,9 +48,9 @@ async function getFavoriteRecipes(username){
 //     }
 // }
 
-async function addMyRecipe(username, title, image, readyInMinutes, vegan, vegetarian, glutenFree, summary) {
-    const query = `INSERT INTO myrecipes (username, title, image, readyInMinutes, vegan, vegetarian, glutenFree, summary) 
-                   VALUES ('${username}', '${title}', '${image}', ${readyInMinutes}, ${vegan ? 1 : 0}, ${vegetarian ? 1 : 0}, ${glutenFree ? 1 : 0}, '${summary}')`;
+async function addMyRecipe(username, title, image, readyInMinutes, servings, vegan, vegetarian, glutenFree, summary) {
+    const query = `INSERT INTO myrecipes (username, title, image, readyInMinutes, servings, vegan, vegetarian, glutenFree, summary) 
+                   VALUES ('${username}', '${title}', '${image}', ${readyInMinutes}, ${servings}, ${vegan ? 1 : 0}, ${vegetarian ? 1 : 0}, ${glutenFree ? 1 : 0}, '${summary}')`;
     try {
       await DButils.execQuery(query);
       return { success: true, message: "Recipe successfully added to MyRecipes." };

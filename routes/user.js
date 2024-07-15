@@ -132,10 +132,10 @@ router.get('/favorites', async (req,res,next) => {
 router.post('/my_recipes',isAuthenticated, async (req, res, next) => {
   try {
     const username = req.session.username;
-    const { title, image, readyInMinutes, vegetarian, vegan, glutenFree, summary, ingredients, instructions } = req.body;
+    const { title, image, readyInMinutes, servings, vegetarian, vegan, glutenFree, summary, ingredients, instructions } = req.body;
 
     // Assuming recipeId is generated automatically in the database upon insertion
-    const addRecipeResult = await user_utils.addMyRecipe(username, title, image, readyInMinutes, vegetarian, vegan, glutenFree, summary);
+    const addRecipeResult = await user_utils.addMyRecipe(username, title, image, readyInMinutes, servings, vegetarian, vegan, glutenFree, summary);
 
     // Assuming the inserted recipeId can be retrieved from the addRecipeResult if needed
     const recipeId = addRecipeResult.insertId; // Adjust based on how your DButils.execQuery returns the insertId
