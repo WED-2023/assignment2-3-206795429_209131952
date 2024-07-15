@@ -63,7 +63,6 @@
 //     title char(45) NOT NULL,
 //     readyInMinutes int NOT NULL,
 //     image char(255) DEFAULT NULL,
-//     aggregateLikes int DEFAULT NULL,
 //     vegan tinyint DEFAULT NULL,
 //     vegetarian tinyint DEFAULT NULL,
 //     glutenFree tinyint DEFAULT NULL,

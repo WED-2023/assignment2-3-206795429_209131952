@@ -132,10 +132,10 @@ router.get('/favorites', async (req,res,next) => {
 router.post('/my_recipes',isAuthenticated, async (req, res, next) => {
   try {
     const username = req.session.username;
-    const { title, image, readyInMinutes, aggregateLikes, vegetarian, vegan, glutenFree, summary, ingredients, instructions } = req.body;
+    const { title, image, readyInMinutes, vegetarian, vegan, glutenFree, summary, ingredients, instructions } = req.body;
 
     // Assuming recipeId is generated automatically in the database upon insertion
-    const addRecipeResult = await user_utils.addMyRecipe(username, title, image, readyInMinutes, aggregateLikes, vegetarian, vegan, glutenFree, summary);
+    const addRecipeResult = await user_utils.addMyRecipe(username, title, image, readyInMinutes, vegetarian, vegan, glutenFree, summary);
 
     // Assuming the inserted recipeId can be retrieved from the addRecipeResult if needed
     const recipeId = addRecipeResult.insertId; // Adjust based on how your DButils.execQuery returns the insertId
@@ -203,7 +203,6 @@ router.get('/my_recipes',isAuthenticated, async (req, res, next) => {
 router.get('/my_recipes/:title',isAuthenticated, async (req, res, next) => {
   try {
     const username = req.session.username;
-    console.log("title = ",req.params.title)
     const result = await user_utils.getMyOneRecipes(username, req.params.title);
 
     if (!result.success) {
@@ -213,11 +212,18 @@ router.get('/my_recipes/:title',isAuthenticated, async (req, res, next) => {
     const recipe = result.data;
    // const recipetitles = recipes.map(recipe => recipe.title);
 
-    console.log("recipe = ",recipe)
     //const recipePreviews = await recipe_utils.getRecipesPreview(recipetitles);
-    recipe.ingredients = (await user_utils.getIngredients(title, username)).data;
-    recipe.instructions = (await user_utils.getInstructions(title, username)).data;
+    const ingredientsResult = await user_utils.getIngredients(req.params.title, username);
+    const instructionsResult = await user_utils.getInstructions(req.params.title, username);
 
+    // Extract ingredients and instructions into lists
+    recipe.ingredients = ingredientsResult.data.map(item => ({
+      ingredient: item.ingredient,
+      amount: item.amount
+    }));
+
+    recipe.instructions = instructionsResult.data.map(item => ({instruction: item.instruction
+    }));
 
     res.status(200).send(recipe);
   } catch (error) {

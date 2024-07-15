@@ -48,9 +48,9 @@ async function getFavoriteRecipes(username){
 //     }
 // }
 
-async function addMyRecipe(username, title, image, readyInMinutes, aggregateLikes, vegan, vegetarian, glutenFree, summary) {
-    const query = `INSERT INTO myrecipes (username, title, image, readyInMinutes, aggregateLikes, vegan, vegetarian, glutenFree, summary) 
-                   VALUES ('${username}', '${title}', '${image}', ${readyInMinutes}, ${aggregateLikes}, ${vegan ? 1 : 0}, ${vegetarian ? 1 : 0}, ${glutenFree ? 1 : 0}, '${summary}')`;
+async function addMyRecipe(username, title, image, readyInMinutes, vegan, vegetarian, glutenFree, summary) {
+    const query = `INSERT INTO myrecipes (username, title, image, readyInMinutes, vegan, vegetarian, glutenFree, summary) 
+                   VALUES ('${username}', '${title}', '${image}', ${readyInMinutes}, ${vegan ? 1 : 0}, ${vegetarian ? 1 : 0}, ${glutenFree ? 1 : 0}, '${summary}')`;
     try {
       await DButils.execQuery(query);
       return { success: true, message: "Recipe successfully added to MyRecipes." };
@@ -84,7 +84,7 @@ async function getMyRecipes(username) {
     const query = `SELECT * FROM myrecipes WHERE username='${username}' and title='${title}'`;
     try {
       const recipe = await DButils.execQuery(query);
-      return { success: true, data: recipe };
+      return { success: true, data: recipe[0] };
     } catch (error) {
       console.error("SQL Error: ", error.message);
       return { success: false, message: error.message };
@@ -145,11 +145,9 @@ async function getInstructions(title, username) {
 // Function to mark a recipe as viewed
 async function markAsViewed(username, recipe_id) {
   const time = new Date(); // Use current time as the time of viewing
-  const query = `
-    INSERT INTO userslastviews (username, recipe_id, time)
+  const query = `INSERT INTO userslastviews (username, recipe_id, time)
     VALUES ('${username}', ${recipe_id}, '${time.toISOString().slice(0, 19).replace('T', ' ')}')
-    ON DUPLICATE KEY UPDATE time = VALUES(time)
-  `;
+    ON DUPLICATE KEY UPDATE time = VALUES(time)`;
   try {
     await DButils.execQuery(query);
   } catch (error) {
