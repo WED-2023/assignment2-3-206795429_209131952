@@ -185,16 +185,39 @@ router.get('/my_recipes',isAuthenticated, async (req, res, next) => {
     }
 
     const recipes = result.data;
-    //const recipetitles = recipes.map(recipe => recipe.title);
-
+   // const recipetitles = recipes.map(recipe => recipe.title);
     //const recipePreviews = await recipe_utils.getRecipesPreview(recipetitles);
 
     for (const recipe of recipes) {
-      recipe.ingredients = await user_utils.getIngredients(recipe.title);
-      recipe.instructions = await user_utils.getInstructions(recipe.title);
+      recipe.ingredients = (await user_utils.getIngredients(recipe.title, username)).data;
+      recipe.instructions = (await user_utils.getInstructions(recipe.title, username)).data;
     }
 
-    res.status(200).send(recipePreviews);
+    res.status(200).send(recipes);
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+router.get('/my_recipes/:title',isAuthenticated, async (req, res, next) => {
+  try {
+    const username = req.session.username;
+    const result = await user_utils.getMyOneRecipes(username,title);
+
+    if (!result.success) {
+      throw new Error(result.message);
+    }
+
+    const recipe = result.data;
+   // const recipetitles = recipes.map(recipe => recipe.title);
+
+    //const recipePreviews = await recipe_utils.getRecipesPreview(recipetitles);
+    recipe.ingredients = (await user_utils.getIngredients(recipe.title, username)).data;
+    recipe.instructions = (await user_utils.getInstructions(recipe.title, username)).data;
+
+
+    res.status(200).send(recipes);
   } catch (error) {
     next(error);
   }

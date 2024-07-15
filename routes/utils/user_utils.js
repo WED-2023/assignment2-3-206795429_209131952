@@ -80,6 +80,17 @@ async function getMyRecipes(username) {
     }
   }
 
+  async function getMyOneRecipes(username, title) {
+    const query = `SELECT * FROM myrecipes WHERE username='${username}' and title='${title}'`;
+    try {
+      const recipe = await DButils.execQuery(query);
+      return { success: true, data: recipe };
+    } catch (error) {
+      console.error("SQL Error: ", error.message);
+      return { success: false, message: error.message };
+    }
+  }
+
 // Function to add an instruction to the instructions table
 async function addInstruction(username, title, instruction_num, instruction) {
     const query = `INSERT INTO instructions (username, title, instruction_num, instruction) 
@@ -108,8 +119,8 @@ async function addIngredient(username, title, ingredient, amount) {
   }
 
 // Function to get all ingredients for a specific recipe
-async function getIngredients(title) {
-    const query = `SELECT * FROM ingredients WHERE title=${title} AND username=${req.session.username}`;
+async function getIngredients(title,username) {
+    const query = `SELECT * FROM ingredients WHERE title='${title}' AND username='${username}'`;
     try {
       const ingredients = await DButils.execQuery(query);
       return { success: true, data: ingredients };
@@ -120,8 +131,8 @@ async function getIngredients(title) {
   }
 
 // Function to get all instructions for a specific recipe
-async function getInstructions(title) {
-    const query = `SELECT * FROM instructions WHERE title=${title} AND username=${req.session.username}`;
+async function getInstructions(title, username) {
+    const query = `SELECT * FROM instructions WHERE title='${title}' AND username='${username}'`;
     try {
       const instructions = await DButils.execQuery(query);
       return { success: true, data: instructions };
@@ -175,3 +186,4 @@ exports.getInstructions = getInstructions;
 exports.markAsViewed = markAsViewed;
 exports.getLastViewedRecipes = getLastViewedRecipes;
 exports.isRecipeFavorite = isRecipeFavorite;
+exports.getMyOneRecipes = getMyOneRecipes;
