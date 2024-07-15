@@ -203,7 +203,8 @@ router.get('/my_recipes',isAuthenticated, async (req, res, next) => {
 router.get('/my_recipes/:title',isAuthenticated, async (req, res, next) => {
   try {
     const username = req.session.username;
-    const result = await user_utils.getMyOneRecipes(username,title);
+    console.log("title = ",req.params.title)
+    const result = await user_utils.getMyOneRecipes(username, req.params.title);
 
     if (!result.success) {
       throw new Error(result.message);
@@ -212,12 +213,13 @@ router.get('/my_recipes/:title',isAuthenticated, async (req, res, next) => {
     const recipe = result.data;
    // const recipetitles = recipes.map(recipe => recipe.title);
 
+    console.log("recipe = ",recipe)
     //const recipePreviews = await recipe_utils.getRecipesPreview(recipetitles);
-    recipe.ingredients = (await user_utils.getIngredients(recipe.title, username)).data;
-    recipe.instructions = (await user_utils.getInstructions(recipe.title, username)).data;
+    recipe.ingredients = (await user_utils.getIngredients(title, username)).data;
+    recipe.instructions = (await user_utils.getInstructions(title, username)).data;
 
 
-    res.status(200).send(recipes);
+    res.status(200).send(recipe);
   } catch (error) {
     next(error);
   }
