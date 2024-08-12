@@ -60,6 +60,34 @@ function isAuthenticated(req, res, next) {
 //   }
 // });
 
+router.get('/favorites/check', async function (req, res, next) {
+  try {
+    const { username, recipeId } = req.query;
+
+    if (!username || !recipeId) {
+      return res.status(400).json({ error: 'Missing username or recipeId' });
+    }
+
+    // Correct SQL query with placeholders
+    const query = `SELECT * FROM favoriterecipes WHERE username = '${username}' AND recipe_id = ${recipeId}`;
+
+    // Execute the query with the parameters properly passed
+    DButils.execQuery(query, [username, recipeId])
+      .then((results) => {
+        if (results.length > 0) {
+          return res.status(200).json({ isFavorite: true });
+        } else {
+          return res.status(200).json({ isFavorite: false });
+        }
+      })
+      .catch((error) => {
+        return next(error);  // Pass the error to the error handler
+      });
+  } catch (error) {
+    return next(error);  // Pass the error to the error handler
+  }
+});
+
 // POST endpoint to add or remove favorite recipe
 router.post('/favorites', async (req, res, next) => {
   try {
