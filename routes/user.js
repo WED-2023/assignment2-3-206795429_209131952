@@ -101,7 +101,7 @@ router.post('/favorites', async (req, res, next) => {
       res.status(200).send("Recipe removed from favorites");
     } else {
       await user_utils.markAsFavorite(username, recipeId);
-      res.status(200).send("Recipe added to favorites");
+      res.status(201).send("Recipe added to favorites");
     }
   } catch (error) {
     next(error);
@@ -176,7 +176,7 @@ router.post('/my_recipes',isAuthenticated, async (req, res, next) => {
       await user_utils.addIngredient(username, title, ingredient.name, ingredient.amount);
     }
 
-    res.status(200).send("The Recipe successfully saved in MyRecipes");
+    res.status(201).send("The Recipe successfully saved in MyRecipes");
   } catch (error) {
     next(error);
   }
@@ -272,7 +272,7 @@ router.get('/last_viewed_recipes', isAuthenticated, async (req, res, next) => {
       recipes.push(recipeDetails);
     }
 
-    res.json({ recipes });
+    res.status(200).json({ recipes });
   } catch (error) {
     console.error('Error fetching last viewed recipes:', error);
     next(error);

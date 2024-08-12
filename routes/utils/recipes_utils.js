@@ -74,29 +74,64 @@ async function getRecipeDetails(recipeId) {
       throw error;
     }
   }
+// async function searchRecipe(recipeName, cuisine, diet, intolerance, number, username) {
+//     const response = await axios.get(`${api_domain}/complexSearch`, {
+//         params: {
+//             query: recipeName,
+//             cuisine: cuisine,
+//             diet: diet,
+//             intolerances: intolerance,
+//             number: number,
+//             apiKey: process.env.spooncular_apiKey
+//         }
+        
+//     }
+// );
+//     // Log parameters to verify correct formatting
+//     console.log("Query Parameters:", {
+//         query: recipeName,
+//         cuisine: cuisine,
+//         diet: diet,
+//         intolerances: intolerance,
+//         number: number,
+//         apiKey: process.env.spooncular_apiKey
+//     });
+
+//     return getRecipesPreview(response.data.results.map((element) => element.id), username);
+// }
+
 async function searchRecipe(recipeName, cuisine, diet, intolerance, number, username) {
+    // Convert arrays to comma-separated strings as Spoonacular API expects
+    const formattedCuisine = Array.isArray(cuisine) ? cuisine.join(',') : cuisine;
+    const formattedDiet = Array.isArray(diet) ? diet.join(',') : diet;
+    const formattedIntolerance = Array.isArray(intolerance) ? intolerance.join(',') : intolerance;
+
+    // Log parameters to verify correct formatting
+    // console.log("Formatted Query Parameters:", {
+    //     query: recipeName,
+    //     cuisine: formattedCuisine,
+    //     diet: formattedDiet,
+    //     intolerances: formattedIntolerance,
+    //     number: number,
+    //     apiKey: process.env.spooncular_apiKey
+    // });
+
+    // Make API call
     const response = await axios.get(`${api_domain}/complexSearch`, {
         params: {
             query: recipeName,
-            cuisine: cuisine,
-            diet: diet,
-            intolerances: intolerance,
+            cuisine: formattedCuisine,
+            diet: formattedDiet,
+            intolerances: formattedIntolerance,
             number: number,
             apiKey: process.env.spooncular_apiKey
         }
-        
-    }
-);
-    // Log parameters to verify correct formatting
-    console.log("Query Parameters:", {
-        query: recipeName,
-        cuisine: cuisine,
-        diet: diet,
-        intolerances: intolerance,
-        number: number,
-        apiKey: process.env.spooncular_apiKey
     });
 
+    // Log response data to ensure correct results
+    console.log("API Response Data:", response.data.results);
+
+    // Fetch detailed information for the search results
     return getRecipesPreview(response.data.results.map((element) => element.id), username);
 }
 

@@ -17,7 +17,7 @@ router.get("/search", async (req, res, next) => {
     const intolerance = req.query.intolerance;
     const number = req.query.number || 5;
     const results = await recipes_utils.searchRecipe(recipeName, cuisine, diet, intolerance, number);
-    res.send(results);
+    res.status(200).send(results);
   } catch (error) {
     next(error);
   }})
@@ -28,7 +28,7 @@ router.get("/search", async (req, res, next) => {
 router.get("/recipe/:recipeId", async (req, res, next) => {
   try {
     const recipe = await recipes_utils.getRecipeDetails(req.params.recipeId);
-    res.send(recipe);
+    res.status(200).send(recipe);
   } catch (error) {
     next(error);
   }
@@ -41,7 +41,7 @@ router.get("/random", async (req, res, next) => {
   try {
     const number = 3 ;
     const recipes = await recipes_utils.getRandomRecipes(3);
-    res.send(recipes);
+    res.status(200).send(recipes);
   } catch (error) {
     next(error);
   }
@@ -52,7 +52,7 @@ router.get('/last-search', async (req, res, next) => {
   try {
     // Implement logic to fetch and return last search results for the logged-in user
     const results = await fetchLastSearchForUser(req.user.id); // Example function to fetch from database
-    res.json({ recipes: results });
+    res.status(200).json({ recipes: results });
   } catch (error) {
     next(error);
   }
