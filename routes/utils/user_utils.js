@@ -36,18 +36,6 @@ async function getFavoriteRecipes(username){
     return recipes ;
 }
 
-// async function addMyRecipe(username, recipe_id, title, image, readyInMinutes, aggregateLikes, vegan, vegetarian, glutenFree, summary, instructions) {
-//     const query = `INSERT INTO myrecipes (username, recipe_id, title, readyInMinutes, image, aggregateLikes, vegan, vegetarian, glutenFree, summary, instructions) 
-//                    VALUES ('${username}', ${recipe_id}, '${title}', ${readyInMinutes}, '${image}', ${aggregateLikes}, ${vegan ? 1 : 0}, ${vegetarian ? 1 : 0}, ${glutenFree ? 1 : 0}, '${summary}', '${instructions}')`;
-//     try {
-//         await DButils.execQuery(query);
-//         return { success: true, message: "Recipe successfully added to MyRecipes." };
-//     } catch (error) {
-//         console.error("SQL Error: ", error.message);
-//         return { success: false, message: error.message };
-//     }
-// }
-
 async function addMyRecipe(username, title, image, readyInMinutes, servings, vegan, vegetarian, glutenFree, summary) {
     const query = `INSERT INTO myrecipes (username, title, image, readyInMinutes, servings, vegan, vegetarian, glutenFree, summary) 
                    VALUES ('${username}', '${title}', '${image}', ${readyInMinutes}, ${servings}, ${vegan ? 1 : 0}, ${vegetarian ? 1 : 0}, ${glutenFree ? 1 : 0}, '${summary}')`;
@@ -60,14 +48,6 @@ async function addMyRecipe(username, title, image, readyInMinutes, servings, veg
     }
 }
 
-
-// async function getMyRecipes(username){
-//     const recipes = await DButils.execQuery(`select recipe_id from MyRecipes where username='${username}'`);
-//     if (recipes.length === 0) {
-//         throw new Error("There are no users recipes recipes");
-//     }
-//     return recipes ;
-// }
 
 async function getMyRecipes(username) {
     const query = `SELECT * FROM myrecipes WHERE username='${username}'`;

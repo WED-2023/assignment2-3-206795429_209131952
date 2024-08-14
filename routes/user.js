@@ -30,36 +30,6 @@ function isAuthenticated(req, res, next) {
 }
 
 
-
-/**
- * This path gets body with recipeId and save this recipe in the favorites list of the logged-in user
- */
-// router.post('/favorites', async (req,res,next) => {
-//   try{
-//     const username = req.session.username;
-//     const recipe_id = req.body.recipeId;
-//     await user_utils.markAsFavorite(username,recipe_id);
-//     res.status(200).send("The Recipe successfully saved as favorite");
-//     } catch(error){
-//     next(error);
-//   }
-// })
-
-// router.delete('/favorites', async (req, res, next) => {
-//   try {
-//       const username = req.session.username;
-//       const recipe_id = req.body.recipeId;
-//       await user_utils.removeFavorite(username, recipe_id);
-//       res.status(200).send("The Recipe successfully removed from favorites");
-//   } catch (error) {
-//     if (error.message === "Recipe not found in favorites") {
-//       res.status(404).send("Recipe not found");
-//     } else {
-//         next(error); // Handle other errors normally
-//     }
-//   }
-// });
-
 router.get('/favorites/check', async function (req, res, next) {
   try {
     const { username, recipeId } = req.query;
@@ -131,32 +101,6 @@ router.get('/favorites', async (req,res,next) => {
 });
 
 
-/**
- * This path gets body with frecipe and save this recipe in the list of the logged-in user
- */
-// router.post('/my_recipes', async (req,res,next) => {
-//   try{
-//     const username = req.session.username;
-//     const recipe_id = req.body.recipeId;
-//     const title = req.body.title;
-//     const image = req.body.image;
-//     const readyInMinutes = req.body.readyInMinutes;
-//     const aggregateLikes = req.body.aggregateLikes;
-//     const vegetarian = req.body.vegetarian;
-//     const vegan = req.body.vegan;
-//     const glutenFree = req.body.glutenFree;
-//     const summary = req.body.summary;
-//     const instructions = req.body.instructions;
-
-
-//     await user_utils.addMyRecipe(username,recipe_id, title, image, readyInMinutes, aggregateLikes, vegetarian, vegan, glutenFree, summary, instructions);
-//     res.status(200).send("The Recipe successfully saved in MyRecipes");
-//     } catch(error){
-//     next(error);
-//   }
-// });
-
-
 router.post('/my_recipes',isAuthenticated, async (req, res, next) => {
   try {
     const username = req.session.username;
@@ -181,26 +125,6 @@ router.post('/my_recipes',isAuthenticated, async (req, res, next) => {
     next(error);
   }
 });
-
-/**
- * This path returns the user's recipes that were created by the logged-in user
- */
-// router.get('/my_recipes', async (req,res,next) => {
-//   try{
-//     const username = req.session.username;
-//     let my_recipes = {};
-//     const recipes = await user_utils.getMyRecipes(username);
-//     let recipes_id_array = [];
-//     recipes.map((element) => recipes_id_array.push(element.recipe_id)); //extracting the recipe ids into array
-//     const results = await recipe_utils.getRecipesPreview(recipes_id_array);
-//     res.status(200).send(results);
-//   } catch(error){
-//     if (error.message === "There are no users recipes recipes") {
-//       res.status(404).send("There are no users recipes recipes");
-//     } else {
-//         next(error); // Handle other errors normally
-//     } 
-// }});
 
 
 router.get('/my_recipes',isAuthenticated, async (req, res, next) => {
@@ -292,14 +216,5 @@ router.post('/last_viewed_recipes', isAuthenticated, async (req, res, next) => {
     next(error);
   }
 });
-
-
-
-
-
-
-
-
-
 
 module.exports = router;
