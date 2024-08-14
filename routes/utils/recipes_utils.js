@@ -76,9 +76,6 @@ async function searchRecipe(recipeName, cuisine, diet, intolerance, number, user
         }
     });
 
-    // Log response data to ensure correct results
-    console.log("API Response Data:", response.data.results);
-
     // Fetch detailed information for the search results
     return getRecipesPreview(response.data.results.map((element) => element.id), username);
 }
