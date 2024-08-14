@@ -2,7 +2,7 @@
 # Foody Shmoody - Recipe Management Web App 
 
 This project focuses on creating a dynamic web application for managing and preserving recipes. The application leverages the Spoonacular API to provide users with a comprehensive recipe management system, allowing them to search, filter, and store recipes efficiently.
-User can Register, save his favorites recipes, and create recipes of his own.
+Users can register, save their favorites recipes, and create recipes of their own.
 
 
 ## Creators:
