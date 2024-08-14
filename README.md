@@ -24,6 +24,7 @@ Users can register, save their favorites recipes, and create recipes of their ow
 ## Technical Implementation:
 - Frontend: The frontend is developed using Vue.js, providing a reactive and user-friendly interface.
 - Backend: The backend is built with Node.js and Express.js, managing API requests and handling data processing.
+- The API for the integration between front and back, written in swagger: https://app.swaggerhub.com/apis-docs/LironMiriamShemen/recipesAPI/1.0.0
 - Database: MySQL is used to store user data, including saved recipes, preferences, and interaction history.
 - API Integration: The Spoonacular API is integrated to handle recipe searches, filtering, and data retrieval, providing users with a vast and diverse range of recipes.
 
